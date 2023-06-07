@@ -1,0 +1,175 @@
+<template>
+
+    <!--USE ACCORDIAN TO MAKE CALENDAR COLLAPSIBLE-->
+        <lightning-accordion allow-multiple-sections-open active-section-name="">
+
+            <!--DISPLAY TO USER SELECTED DATE-->
+            <lightning-layout>
+                <lightning-layout-item>
+          <lightning-input type="text" label="Start Date Deploy Worked" value={selection}></lightning-input>
+          <lightning-accordion-section name="A" label="Choose A Start Date (Collapse)">
+
+        <!--GIVE CALENDAR GRID STRUCTURE-->
+        <div class="slds-grid slds-gutters">
+            <!--(WORKAROUND) ADD LEFT MARGIN TO THE COMPONENT-->
+            <div class="slds-col slds-size_1-of-20">
+              <span>  </span>
+            </div>
+            <div class="slds-col slds-size_19-of-20">
+
+            <!--LOOP THROUGH MONTH RECORDS (WILL BE A SINGLE MONTH BUT USED LOOP NONETHELESS)-->
+          <template for:each={recordsToDisplay} for:item="room">
+            <lightning-card key={room.month}>
+            <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-size_1-of-1">
+                <span class="slds-align_absolute-center"><b>{room.month}</b></span>
+              </div>
+
+              <!--LOOP THROUGH DAYSOFWEEK VARIABLE PRINT DAYS OF WEEK-->
+              <template for:each={daysOfWeek} for:item="day">
+              <div class="slds-col slds-size_1-of-7" key={day}>
+                <span class="slds-align_absolute-center"><b>{day}</b></span>
+              </div>
+            </template>
+
+            <!--ADD BLANK SPACES TO BEGINNING OF MONTH IF APPLICABLE-->
+            <template if:true={spaces}>
+                <template for:each={spaces} for:item="day">
+                <div class="slds-col slds-size_1-of-7 slds-var-p-top_small" key={room.numberOfDays}>
+                    <button class="slds-button slds-button_neutral slds-button_stretch butOn" style="width:65px" value={room.month} title="day">
+                    <lightning-button class={butOn} title="day"></lightning-button>
+                    </button>
+                   </div>
+                </template>
+            </template>
+
+            <!--LOOP THROUGH RECORDSTODISPLAY VARIABLE TO PRINT DAYS OF MONTH-->
+              <template for:each={room.numberOfDays} for:item="day">
+                <div class="slds-col slds-size_1-of-7 slds-var-p-top_small" key={room.numberOfDays}>
+                    <button class="slds-button slds-button_neutral slds-button_stretch butOn" style="width:65px" value={room.month} title="day" onclick={handleDatePick}>
+                        <lightning-button value={room.month} title="day" onclick={handleDatePick} label={day}></lightning-button>
+                    </button>
+                </div>
+              </template>
+            </div>
+          </lightning-card>
+          </template>
+        </div>
+      </div>
+        <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread" style="padding-top: 0.5em;">
+
+            <!--RECORDS PER PAGE-->
+            <div class="slds-col">
+                <div class="slds-list_inline slds-p-bottom_xx-small">
+                    <label class="slds-text-color_weak slds-p-horizontal_x-small" for="recordsPerPage">Page Size:</label>
+                    <div class="slds-select_container">
+                        <select class="slds-select" id="recordsPerPage" onchange={handleRecordsPerPage}>
+                            <template for:each={pageSizeOptions} for:item="option">
+                                <option key={option} value={option}>{option}</option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!--PAGE NAVIGATION-->
+            <div class="slds-align_absolute-center" style="height:5rem">
+                <lightning-button disabled={bDisableFirst} icon-name="utility:jump_to_left" label="First" class="slds-p-horizontal_x-small" alternative-text="first page" onclick={firstPage}></lightning-button>
+                <lightning-button disabled={bDisableFirst} icon-name="utility:chevronleft" label="Previous" alternative-text="Previous" onclick={previousPage}></lightning-button>
+                &nbsp;
+                <span class="slds-badge">Showing {pageNumber} &nbsp;of&nbsp; {totalPages} &nbsp;&nbsp;Page(s)</span>
+                &nbsp;
+                <lightning-button disabled={bDisableLast} icon-name="utility:chevronright" label="Next" alternative-text="Next" onclick={nextPage} class="slds-p-horizontal_x-small" icon-position="right"></lightning-button>
+                <lightning-button disabled={bDisableLast} icon-name="utility:jump_to_right" label="Last" alternative-text="last page" onclick={lastPage} icon-position="right"></lightning-button>
+            </div>
+
+            <!--TOTAL RECORDS-->
+        </div>
+          </lightning-accordion-section>
+        </lightning-layout-item>
+        <lightning-layout-item>
+          <lightning-input type="text" label="End Date Deploy Worked" value={selectionTwo}></lightning-input>
+          <lightning-accordion-section name="B" label="Choose An End Date (Collapse)">
+
+        <!--GIVE CALENDAR GRID STRUCTURE-->
+        <div class="slds-grid slds-gutters">
+
+            <!--(WORKAROUND) ADD LEFT MARGIN TO THE COMPONENT-->
+            <div class="slds-col slds-size_1-of-20">
+              <span>  </span>
+            </div>
+            <div class="slds-col slds-size_19-of-20">
+
+            <!--LOOP THROUGH MONTH RECORDS (WILL BE A SINGLE MONTH BUT USED LOOP NONETHELESS)-->
+          <template for:each={recordsToDisplay} for:item="room">
+            <lightning-card key={room.month}>
+            <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-size_1-of-1">
+                <span class="slds-align_absolute-center"><b>{room.month}</b></span>
+              </div>
+
+              <!--LOOP THROUGH DAYSOFWEEK VARIABLE PRINT DAYS OF WEEK-->
+              <template for:each={daysOfWeek} for:item="day">
+              <div class="slds-col slds-size_1-of-7" key={day}>
+                <span class="slds-align_absolute-center"><b>{day}</b></span>
+              </div>
+            </template>
+
+            <!--ADD BLANK SPACES TO BEGINNING OF MONTH IF APPLICABLE-->
+            <template if:true={spaces}>
+                <template for:each={spaces} for:item="day">
+                <div class="slds-col slds-size_1-of-7 slds-var-p-top_small" key={room.numberOfDays}>
+                    <button class="slds-button slds-button_neutral slds-button_stretch butOn" style="width:65px" value={room.month} title="day">
+                    <lightning-button class={butOn} title="day"></lightning-button>
+                    </button>
+                   </div>
+                </template>
+            </template>
+
+            <!--LOOP THROUGH RECORDSTODISPLAY VARIABLE TO PRINT DAYS OF MONTH-->
+              <template for:each={room.numberOfDays} for:item="dayTwo">
+                <div class="slds-col slds-size_1-of-7 slds-var-p-top_small" key={room.numberOfDays}>
+                    <button class="slds-button slds-button_neutral slds-button_stretch butOn" style="width:65px" value={room.month} title="day" onclick={handleEndDatePick}>
+                        <lightning-button value={room.month} title="dayTwo" onclick={handleEndDatePick} label={dayTwo}></lightning-button>
+                    </button>
+                </div>
+              </template>
+            </div>
+          </lightning-card>
+          </template>
+        </div>
+      </div>
+        <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread" style="padding-top: 0.5em;">
+
+            <!--RECORDS PER PAGE-->
+            <div class="slds-col">
+                <div class="slds-list_inline slds-p-bottom_xx-small">
+                    <label class="slds-text-color_weak slds-p-horizontal_x-small" for="recordsPerPage">Page Size:</label>
+                    <div class="slds-select_container">
+                        <select class="slds-select" id="recordsPerPageTwo" onchange={handleRecordsPerPageTwo}>
+                            <template for:each={pageSizeOptions} for:item="option">
+                                <option key={option} value={option}>{option}</option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!--PAGE NAVIGATION-->
+            <div class="slds-align_absolute-center" style="height:5rem">
+                <lightning-button disabled={bDisableFirst} icon-name="utility:jump_to_left" label="First" class="slds-p-horizontal_x-small" alternative-text="first page" onclick={firstPage}></lightning-button>
+                <lightning-button disabled={bDisableFirst} icon-name="utility:chevronleft" label="Previous" alternative-text="Previous" onclick={previousPage}></lightning-button>
+                &nbsp;
+                <span class="slds-badge">Showing {pageNumber} &nbsp;of&nbsp; {totalPages} &nbsp;&nbsp;Page(s)</span>
+                &nbsp;
+                <lightning-button disabled={bDisableLast} icon-name="utility:chevronright" label="Next" alternative-text="Next" onclick={nextPage} class="slds-p-horizontal_x-small" icon-position="right"></lightning-button>
+                <lightning-button disabled={bDisableLast} icon-name="utility:jump_to_right" label="Last" alternative-text="last page" onclick={lastPage} icon-position="right"></lightning-button>
+            </div>
+
+            <!--TOTAL RECORDS-->
+        </div>
+          </lightning-accordion-section>
+        </lightning-layout-item>
+        </lightning-layout>
+    </lightning-accordion>
+</template>

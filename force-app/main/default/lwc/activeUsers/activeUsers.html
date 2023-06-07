@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title="Employees Currently Logged In">
+        <ul>
+            <template if:true={responseReceived}>
+                <template for:each={employees.data} for:item="employee">
+                    <li key={employee.Name}>
+                        <div class="slds-p-around_medium lgc-bg">
+                            <lightning-tile label={employee.User__r.Name} href="/path/to/somewhere">
+                                <lightning-icon slot="media" icon-name="standard-account"></lightning-icon>
+                                <p class="slds-truncate" title={employee.Name}>Employee Id: {employee.Name}</p>
+                                <p class="slds-truncate" title={employee.Status__c}>Status: {employee.Status__c}</p>
+                            </lightning-tile>
+                        </div>
+                    </li>
+                </template>
+            </template>
+        </ul>
+    </lightning-card>
+ </template>

@@ -1,0 +1,64 @@
+<template>
+  <lightning-card class="slds-border_top slds-border_bottom slds-border_left slds-border_right">
+  <lightning-accordion allow-multiple-sections-open
+  active-section-name="">
+    <lightning-input type="text" label="Start Date" value={selection}></lightning-input>
+    <lightning-accordion-section name="A" label="Choose A Start Date (Collapse)">
+      <lightning-card>
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col slds-size_1-of-20">
+            <span>  </span>
+          </div>
+          <div class="slds-col slds-size_19-of-20">
+        <template for:each={meetingRoomsInfo} for:item="room">
+          <lightning-card key={room.month}>
+          <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1">
+              <span class="slds-align_absolute-center"><b>{room.month}</b></span>
+            </div>
+            <template for:each={room.numberOfDays} for:item="day">
+              <div class="slds-col slds-size_1-of-7 slds-var-p-top_small" key={room.numberOfDays}>
+               <lightning-button label={day} value={room.month} title="day" onclick={handleDatePick}></lightning-button>
+              </div>
+            </template>
+          </div>
+        </lightning-card>
+        </template>
+      </div>
+    </div>
+    </lightning-card>
+  </lightning-accordion-section>
+  <lightning-input type="text" label="End Date" value={selection}></lightning-input>
+  <lightning-accordion-section name="B" label="Choose An End Date (Collapse)">
+  <lightning-card>
+    <div class="slds-grid slds-gutters">
+      <div class="slds-col slds-size_1-of-20">
+        <span>  </span>
+      </div>
+      <div class="slds-col slds-size_19-of-20">
+    <template for:each={meetingRoomsInfo} for:item="room">
+      <lightning-card key={room.month}>
+      <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1">
+          <span class="slds-align_absolute-center"><b>{room.month}</b></span>
+        </div>
+        <template for:each={room.numberOfDays} for:item="day">
+          <div class="slds-col slds-size_1-of-7 slds-var-p-top_small" key={room.numberOfDays}>
+           <lightning-button label={day} value={room.month} title="day" onclick={handleDatePick}></lightning-button>
+          </div>
+        </template>
+      </div>
+    </lightning-card>
+    </template>
+  </div>
+</div>
+</lightning-card>
+</lightning-accordion-section>
+</lightning-accordion>
+</lightning-card>
+</template>
+
+
+
+
+
